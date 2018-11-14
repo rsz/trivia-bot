@@ -25,7 +25,6 @@ def q_and_a():
 	ans = {}
 	for i in range(0,len(answers)):
 		ans[i+1] = answers[i]
-	#print(ans)
 	return ans,correct_answer,question
 #def play():
 	#ans,correct_answer = q_and_a()
@@ -38,10 +37,28 @@ def q_and_a():
 		#correct_answer ---->
 	#answers ----------->
 
-
 #play()
+
+active = False
 
 @sopel.module.commands('start')
 def start(bot,trigger):
-    ans,correct_answer,question = q_and_a()
-    bot.say(trigger.nick)
+	global active
+	ans,correct_answer,question = q_and_a()
+	bot.say(question)
+	bot.say(str(ans))
+	bot.say(correct_answer)
+	active = True
+
+@sopel.module.rule('[1-4]')
+def an(bot, trigger):
+	global active
+	if active == True:
+		bot.say("number")
+		active = False
+	#	if ans[int(trigger)] == correct_answer:
+	#		bot.say("Correct")
+
+@sopel.module.rule('hello!?')
+def hi(bot, trigger):
+    bot.say('Hi, ' + trigger.nick + trigger)
